@@ -1,0 +1,116 @@
+import 'package:ewallet_clover/ui/shared/utils/constants.dart';
+import 'package:flutter/material.dart';
+
+class MyDialog extends StatelessWidget {
+  final IconData icon;
+  final Color iconColor;
+  final String title;
+  final String message;
+  final String subMessage;
+  final String button1Title;
+  final String button2Title;
+  final Function button1Function;
+  final Function button2Function;
+  final bool hasError;
+
+  const MyDialog({
+    Key key,
+    this.icon,
+    this.iconColor,
+    this.title,
+    @required this.message,
+    this.subMessage,
+    this.button1Title,
+    this.button2Title,
+    this.button1Function,
+    this.button2Function,
+    this.hasError,
+  }) : super(key: key);
+
+  // Add "barrierDismissible: false" below ShowDialog if you don't want to dismiss dialog on outside tap
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(8.0)),
+      ),
+      title: Column(
+        children: [
+          if (icon != null)
+            Column(
+              children: [
+                Icon(
+                  icon,
+                  color: iconColor == null ? kPrimaryColor : iconColor,
+                  size: 30.0,
+                ),
+                SizedBox(
+                  height: 8.0,
+                ),
+              ],
+            ),
+          Row(
+            children: [
+              if (title != null)
+                Expanded(
+                  child: Text(
+                    title,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.black87,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        ],
+      ),
+      content: IntrinsicHeight(
+        child: Column(
+          children: [
+            Text(
+              message,
+              textAlign: TextAlign.center,
+            ),
+            if (subMessage != null)
+              Column(
+                children: [
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  Text(
+                    subMessage,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 10.5, color: Colors.grey),
+                  ),
+                ],
+              ),
+            SizedBox(
+              height: 20.0,
+            ),
+            button1Title == null || button1Title == ''
+                ? SizedBox()
+                : ElevatedButton(
+                    onPressed: button1Function == null ? () => Navigator.pop(context) : button1Function,
+                    child: Text(
+                      '  $button1Title  ',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    style: ButtonStyle(shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(50.0)))),
+                  ),
+            button2Title == null || button2Title == ''
+                ? SizedBox()
+                : FlatButton(
+                    child: Text(button2Title),
+                    onPressed: button2Function == null ? () => Navigator.pop(context) : button2Function,
+                    splashColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
+                  ),
+          ],
+        ),
+      ),
+    );
+  }
+}
