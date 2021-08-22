@@ -28,12 +28,14 @@ class UserRegistrationConfirmationPage extends StatelessWidget {
                       title: 'Mobile Number',
                       value: registration.mobileNumber,
                     ),
-                    Divider(),
+                    InformationTile(
+                      title: 'Email Address',
+                      value: registration.email,
+                    ),
                     InformationTile(
                       title: 'First Name',
                       value: registration.firstName,
                     ),
-                    Divider(),
                     if (registration.middleName != '')
                       Column(
                         children: [
@@ -41,27 +43,24 @@ class UserRegistrationConfirmationPage extends StatelessWidget {
                             title: 'Middle Name',
                             value: registration.middleName,
                           ),
-                          Divider(),
                         ],
                       ),
                     InformationTile(
                       title: 'Last Name',
-                      value: registration.firstName,
+                      value: registration.lastName,
                     ),
-                    Divider(),
                     InformationTile(
                       title: 'Birth Date',
                       value: registration.birthDate,
                     ),
-                    Divider(),
                     InformationTile(
                       title: 'Gender',
                       value: registration.gender,
                     ),
-                    Divider(),
                     InformationTile(
                       title: 'Full Address',
                       value: registration.fullAddress,
+                      showDivider: false,
                     ),
                   ],
                 ),
@@ -70,14 +69,33 @@ class UserRegistrationConfirmationPage extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.all(kScreenPadding),
-            child: Container(
-              height: 50.0,
-              child: GradientButton(
-                title: 'Confirm',
-                onPressed: () {
-                  pageController.nextPage(duration: Duration(milliseconds: 400), curve: Curves.ease);
-                },
-              ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    height: 50.0,
+                    child: GradientButton(
+                      title: 'Back',
+                      hasBorder: true,
+                      onPressed: () {
+                        pageController.previousPage(duration: Duration(milliseconds: 400), curve: Curves.ease);
+                      },
+                    ),
+                  ),
+                ),
+                SizedBox(width: 10.0),
+                Expanded(
+                  child: Container(
+                    height: 50.0,
+                    child: GradientButton(
+                      title: 'Confirm',
+                      onPressed: () {
+                        pageController.nextPage(duration: Duration(milliseconds: 400), curve: Curves.ease);
+                      },
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],

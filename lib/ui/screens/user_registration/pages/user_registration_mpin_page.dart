@@ -1,6 +1,7 @@
 import 'package:ewallet_clover/core/functions/http_handler.dart';
 import 'package:ewallet_clover/core/functions/loading_dialog.dart';
 import 'package:ewallet_clover/core/providers/registration_provider.dart';
+import 'package:ewallet_clover/core/providers/shared_provider.dart';
 import 'package:ewallet_clover/core/providers/user_provider.dart';
 import 'package:ewallet_clover/core/services/api_service.dart';
 import 'package:ewallet_clover/ui/screens/dashboard/dashboard_screen.dart';
@@ -38,6 +39,7 @@ class _UserRegistrationMPINPageState extends State<UserRegistrationMPINPage> {
   Widget build(BuildContext context) {
     final registration = Provider.of<RegistrationProvider>(context);
     final user = Provider.of<UserProvider>(context);
+    final shared = Provider.of<SharedProvider>(context);
     final loadingDialog = MyLoadingDialog(context);
 
     Future<bool> registerUser() async {
@@ -52,8 +54,8 @@ class _UserRegistrationMPINPageState extends State<UserRegistrationMPINPage> {
         gender: registration.gender,
         maritalStatus: registration.maritalStatus,
         fullAddress: registration.fullAddress,
-        deviceModel: '',
-        deviceID: '',
+        deviceModel: shared.deviceModel,
+        deviceID: shared.deviceID,
       );
 
       if (response.resultCode == 00) {
@@ -112,6 +114,7 @@ class _UserRegistrationMPINPageState extends State<UserRegistrationMPINPage> {
                         title: 'Input MPIN',
                         controller: _mpinFieldController,
                         prefixIcon: Icons.lock,
+                        maxLength: 6,
                         obscureText: true,
                         validator: (value) {
                           if (value.isEmpty) {
@@ -125,6 +128,7 @@ class _UserRegistrationMPINPageState extends State<UserRegistrationMPINPage> {
                         title: 'Confirm MPIN',
                         controller: _confirmMpinFieldController,
                         prefixIcon: Icons.lock,
+                        maxLength: 6,
                         obscureText: true,
                         validator: (value) {
                           if (value.isEmpty) {
@@ -144,24 +148,43 @@ class _UserRegistrationMPINPageState extends State<UserRegistrationMPINPage> {
           ),
           Padding(
             padding: const EdgeInsets.all(kScreenPadding),
-            child: Container(
-              height: 50.0,
-              child: GradientButton(
-                title: 'Register',
-                onPressed: () async {
-                  FocusScope.of(context).requestFocus(FocusNode());
-                  if (_formKey.currentState.validate()) {
-                    registration.mpin = _mpinFieldController.text;
-                    loadingDialog.show();
-                    if (await registerUser()) {
-                      if (await signIn()) {
-                        loadingDialog.hide();
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => DashboardScreen()));
-                      }
-                    }
-                  }
-                },
-              ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    height: 50.0,
+                    child: GradientButton(
+                      title: 'Back',
+                      hasBorder: true,
+                      onPressed: () {
+                        widget.pageController.previousPage(duration: Duration(milliseconds: 400), curve: Curves.ease);
+                      },
+                    ),
+                  ),
+                ),
+                SizedBox(width: 10.0),
+                Expanded(
+                  child: Container(
+                    height: 50.0,
+                    child: GradientButton(
+                      title: 'Register',
+                      onPressed: () async {
+                        FocusScope.of(context).requestFocus(FocusNode());
+                        if (_formKey.currentState.validate()) {
+                          registration.mpin = _mpinFieldController.text;
+                          loadingDialog.show();
+                          if (await registerUser()) {
+                            if (await signIn()) {
+                              loadingDialog.hide();
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => DashboardScreen()));
+                            }
+                          }
+                        }
+                      },
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],

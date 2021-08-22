@@ -1,4 +1,6 @@
 import 'package:ewallet_clover/core/providers/user_provider.dart';
+import 'package:ewallet_clover/ui/screens/cash_in/cash_in_screen.dart';
+import 'package:ewallet_clover/ui/screens/fund_transfer/fund_transfer_screen.dart';
 import 'package:ewallet_clover/ui/shared/utils/constants.dart';
 import 'package:ewallet_clover/ui/shared/widgets/action_button.dart';
 import 'package:flutter/cupertino.dart';
@@ -72,14 +74,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
             bottom: PreferredSize(
               child: SizedBox(height: 10.0),
             ),
-            actions: [
-              IconButton(
-                icon: Icon(Icons.notifications),
-                iconSize: 30.0,
-                onPressed: () {},
-              ),
-            ],
           ),
+          endDrawer: Drawer(),
           body: SafeArea(
             bottom: false,
             child: SlidingUpPanel(
@@ -116,13 +112,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         icon: Icons.near_me_outlined,
                         title: 'Transfer',
                         enable: !user.isBalanceLoading,
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => FundTransferScreen()));
+                        },
                       ),
                       ActionButton(
                         icon: Icons.add,
-                        title: 'Deposit',
+                        title: 'Cash-in',
                         enable: !user.isBalanceLoading,
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => CashInScreen()));
+                        },
                       ),
                     ],
                   ),
@@ -169,17 +169,18 @@ class BalanceView extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(top: 8.0),
+                            padding: const EdgeInsets.only(top: 5.0),
                             child: Text(
                               'PHP ',
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 14.0,
+                                fontSize: 12.0,
+                                fontWeight: FontWeight.w400,
                               ),
                             ),
                           ),
                           Text(
-                            '${money.format(user.availableBalance)}    ',
+                            '${money.format(user.availableBalance)}   ',
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 30.0,

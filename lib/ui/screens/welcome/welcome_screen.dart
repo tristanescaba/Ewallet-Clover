@@ -23,8 +23,11 @@ class WelcomeScreen extends StatelessWidget {
     }
 
     return StateWrapper(
-      initState: () async {
-        shared.isAppInitiated = await appInit();
+      initState: () {
+        Future.delayed(const Duration(milliseconds: 1500), () async {
+          shared.getDeviceDetails();
+          shared.isAppInitiated = await appInit();
+        });
       },
       child: Scaffold(
         appBar: AppBar(

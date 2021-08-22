@@ -12,18 +12,16 @@ class UserRegistrationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Widget> _pages = [
-//      UserRegistrationMobileNumPage(pageController: _pageController),
       UserRegistrationOTPPage(pageController: _pageController),
       UserRegistrationPersonalPage(pageController: _pageController),
       UserRegistrationConfirmationPage(pageController: _pageController),
       UserRegistrationMPINPage(pageController: _pageController),
     ];
     List<String> _pageTitles = [
-//      'Step 1: Input your mobile number.',
-      'Step 1: Input OTP code sent to your mobile number.',
-      'Step 2: Input your personal information.',
-      'Step 3: Please confirm your inputted information.',
-      'Step 4: Setup MPIN',
+      'Input OTP code sent to your mobile number.',
+      'Input your personal information.',
+      'Please confirm your inputted information.',
+      'Setup MPIN',
     ];
 
     return Scaffold(

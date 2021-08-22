@@ -57,7 +57,7 @@ class MyDialog extends StatelessWidget {
                 Expanded(
                   child: Text(
                     title,
-//                    textAlign: TextAlign.center,
+                    textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.black87,
                     ),
@@ -76,7 +76,7 @@ class MyDialog extends StatelessWidget {
                 children: [
                   Text(
                     message,
-//                    textAlign: TextAlign.center,
+                    textAlign: TextAlign.center,
                   ),
                   if (subMessage != null)
                     Column(
@@ -86,7 +86,7 @@ class MyDialog extends StatelessWidget {
                         ),
                         Text(
                           subMessage,
-//                          textAlign: TextAlign.center,
+                          textAlign: TextAlign.center,
                           style: TextStyle(fontSize: 10.5, color: Colors.grey),
                         ),
                       ],

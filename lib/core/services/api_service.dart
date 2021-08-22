@@ -70,7 +70,7 @@ class APIService {
 
   Future<ResponseModel> registration({String birthDate, email, mobile, mpin, firstName, middleName, lastName, gender, maritalStatus, deviceModel, deviceID, fullAddress}) async {
     return await requestHandler(
-      url: '$_url/requestOTP',
+      url: '$_url/registration',
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -79,7 +79,7 @@ class APIService {
         "mpin": mpin,
         "emailAdd": email,
         "firstname": firstName,
-        "middleInitial": middleName,
+        if (middleName != '') "middleInitial": middleName,
         "lastname": lastName,
         "dateOfBirth": birthDate,
         "gender": gender,
@@ -87,6 +87,18 @@ class APIService {
         "fullAddress": fullAddress,
         "model": deviceModel,
         "imei": deviceID,
+      }),
+    );
+  }
+
+  Future<ResponseModel> checkEmail({String email}) async {
+    return await requestHandler(
+      url: '$_url/inquireEmail',
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, dynamic>{
+        'email': email,
       }),
     );
   }

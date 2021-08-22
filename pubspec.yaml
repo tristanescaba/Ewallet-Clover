@@ -36,6 +36,7 @@ dependencies:
   encrypt: ^3.2.0 # encrypt & decrypt
   flutter_svg: ^0.19.1 # For displaying SVG
   flutter_secure_storage: ^3.3.5 # Stores user in a secure storage | min sdk 18
+  device_info_plus: ^0.7.2 # get device info
 
 
 dev_dependencies:

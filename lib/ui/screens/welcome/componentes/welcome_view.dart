@@ -33,10 +33,11 @@ class _WelcomeViewState extends State<WelcomeView> {
     final loadingDialog = MyLoadingDialog(context);
 
     Future<bool> requestOTP() async {
-      final ResponseModel response = await _apiService.requestOTP(mobileNumber: registration.mobileNumber);
       loadingDialog.show(message: 'Requesting OTP...');
+      final ResponseModel response = await _apiService.requestOTP(mobileNumber: registration.mobileNumber);
 
       if (response.resultCode == 00) {
+        loadingDialog.hide();
         return true;
       } else {
         loadingDialog.hide();
@@ -66,10 +67,10 @@ class _WelcomeViewState extends State<WelcomeView> {
             button1Title: 'Let\'s go!',
             button2Title: 'Not now',
             button1Function: () async {
-//              if (await requestOTP()) {
-              loadingDialog.hide();
-              Navigator.push(context, MaterialPageRoute(builder: (context) => UserRegistrationScreen()));
-//              }
+              Navigator.pop(context);
+              if (await requestOTP()) {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => UserRegistrationScreen()));
+              }
             },
           ),
         );
@@ -107,6 +108,7 @@ class _WelcomeViewState extends State<WelcomeView> {
             prefixText: '+63',
             maxLength: 10,
             controller: _mobileFieldController,
+            keyboardType: TextInputType.number,
             validator: (value) {
               if (value.isEmpty) {
                 return "Please input mobile number.";

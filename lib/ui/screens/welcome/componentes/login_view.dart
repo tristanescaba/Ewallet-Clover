@@ -52,13 +52,14 @@ class LoginView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('${user.savedMobileNumber} | '),
+            Text('${user.savedMobileNumber}'),
+            Text('  |  ', style: TextStyle(color: Colors.grey[500], fontWeight: FontWeight.w300)),
             GestureDetector(
               onTap: () {
                 user.hasSavedMobileNumber = false;
               },
               child: Text(
-                'Not my number',
+                'Change number',
                 style: TextStyle(color: kPrimaryColor),
               ),
             ),

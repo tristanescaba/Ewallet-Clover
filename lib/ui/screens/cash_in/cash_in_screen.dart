@@ -2,7 +2,6 @@ import 'package:ewallet_clover/ui/screens/cash_in/pages/cash_in_confirmation_pag
 import 'package:ewallet_clover/ui/screens/cash_in/pages/cash_in_input_page.dart';
 import 'package:ewallet_clover/ui/screens/cash_in/pages/cash_in_mpin_page.dart';
 import 'package:ewallet_clover/ui/screens/cash_in/pages/cash_in_receipt_page.dart';
-import 'package:ewallet_clover/ui/shared/widgets/page_step_view.dart';
 import 'package:flutter/material.dart';
 
 class CashInScreen extends StatelessWidget {
@@ -16,13 +15,6 @@ class CashInScreen extends StatelessWidget {
       CashInMPINPage(pageController: _pageController),
       CashInReceiptPage(pageController: _pageController),
     ];
-    List<String> _pageTitles = [
-      'Step 1: Select a target',
-      'Step 2: Input Necessary data',
-      'Step 3: Confirmation',
-      'Step 4: MPIN for verification',
-      'Step 5: Transfer receipt',
-    ];
 
     return Scaffold(
       appBar: AppBar(
@@ -33,10 +25,9 @@ class CashInScreen extends StatelessWidget {
 //          ),
 //        ),
       ),
-      body: PageStepView(
-        pages: _pages,
-        pageTitles: _pageTitles,
-        pageController: _pageController,
+      body: PageView(
+        children: _pages,
+        controller: _pageController,
       ),
     );
   }
