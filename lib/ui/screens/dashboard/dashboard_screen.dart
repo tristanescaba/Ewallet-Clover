@@ -231,10 +231,10 @@ class PanelWidget extends StatelessWidget {
         Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.04),
             SvgPicture.asset(
               'assets/svg/undraw_No_data_re_kwbl.svg',
-              height: 180.0,
+              height: 110.0,
             ),
             SizedBox(height: 30.0),
             Text(

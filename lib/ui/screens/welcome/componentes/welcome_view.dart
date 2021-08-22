@@ -63,7 +63,7 @@ class _WelcomeViewState extends State<WelcomeView> {
           child: MyDialog(
             title: 'Account Activation',
             message: 'This number is not yet registered, would you like to activate this number?',
-            button1Title: 'Yes, Let\'s go!',
+            button1Title: 'Let\'s go!',
             button2Title: 'Not now',
             button1Function: () async {
 //              if (await requestOTP()) {

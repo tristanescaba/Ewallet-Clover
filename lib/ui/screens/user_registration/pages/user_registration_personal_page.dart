@@ -1,6 +1,7 @@
 import 'package:ewallet_clover/core/providers/registration_provider.dart';
 import 'package:ewallet_clover/ui/shared/utils/constants.dart';
 import 'package:ewallet_clover/ui/shared/widgets/gradient_button.dart';
+import 'package:ewallet_clover/ui/shared/widgets/my_dropdown_field.dart';
 import 'package:ewallet_clover/ui/shared/widgets/my_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -39,6 +40,20 @@ class _UserRegistrationPersonalPageState extends State<UserRegistrationPersonalP
   @override
   Widget build(BuildContext context) {
     final registration = Provider.of<RegistrationProvider>(context);
+    DateTime selectedDate = DateTime.now();
+
+    Future<void> _selectDate(BuildContext context) async {
+      final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(1850, 1),
+        lastDate: DateTime(2101),
+      );
+      if (picked != null && picked != selectedDate)
+        setState(() {
+          _birthDateFieldController.text = picked.toString().split(' ')[0];
+        });
+    }
 
     return SafeArea(
       child: Column(
@@ -75,32 +90,60 @@ class _UserRegistrationPersonalPageState extends State<UserRegistrationPersonalP
                         },
                       ),
                       MyTextField(
-                        title: 'Birthdate',
+                        title: 'Birth Date',
+                        enableInteractiveSelection: false,
                         controller: _birthDateFieldController,
+                        onTap: () => _selectDate(context),
                         validator: (value) {
                           if (value.isEmpty) {
                             return "Please select your birth date.";
                           }
                         },
                       ),
-                      MyTextField(
+                      MyDropdownField(
                         title: 'Gender',
-                        controller: _genderFieldController,
+                        selectedValue: registration.gender,
+                        options: ['Male', 'Female'],
+                        onChanged: (value) {
+                          registration.gender = value;
+                        },
                         validator: (value) {
-                          if (value.isEmpty) {
+                          if (value == null || value.isEmpty) {
                             return "Please choose your gender.";
                           }
                         },
                       ),
-                      MyTextField(
+                      MyDropdownField(
                         title: 'Marital Status',
-                        controller: _maritalStatusFieldController,
+                        selectedValue: registration.maritalStatus,
+                        options: ['Single', 'Married', 'Divorced', 'Widowed'],
+                        onChanged: (value) {
+                          registration.maritalStatus = value;
+                        },
                         validator: (value) {
-                          if (value.isEmpty) {
+                          if (value == null || value.isEmpty) {
                             return "Please choose your marital status.";
                           }
                         },
                       ),
+//                      MyTextField(
+//                        title: 'Gender',
+//                        controller: _genderFieldController,
+//                        validator: (value) {
+//                          if (value.isEmpty) {
+//                            return "Please choose your gender.";
+//                          }
+//                        },
+//                      ),
+//                      MyTextField(
+//                        title: 'Marital Status',
+//                        controller: _maritalStatusFieldController,
+//                        validator: (value) {
+//                          if (value.isEmpty) {
+//                            return "Please choose your marital status.";
+//                          }
+//                        },
+//                      ),
                       MyTextField(
                         title: 'Full Address',
                         controller: _addressFieldController,
