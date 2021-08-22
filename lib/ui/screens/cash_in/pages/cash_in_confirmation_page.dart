@@ -1,5 +1,4 @@
 import 'package:ewallet_clover/ui/shared/utils/constants.dart';
-import 'package:ewallet_clover/ui/shared/widgets/confirm_slider.dart';
 import 'package:ewallet_clover/ui/shared/widgets/content_bloc.dart';
 import 'package:ewallet_clover/ui/shared/widgets/information_tile.dart';
 import 'package:flutter/material.dart';
@@ -72,13 +71,6 @@ class CashInConfirmationPage extends StatelessWidget {
               ),
             ),
           ),
-          Padding(
-              padding: const EdgeInsets.all(kScreenPadding),
-              child: ConfirmSlider(
-                onSlide: () {
-                  pageController.nextPage(duration: Duration(milliseconds: 400), curve: Curves.ease);
-                },
-              )),
         ],
       ),
     );

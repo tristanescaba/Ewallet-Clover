@@ -1,6 +1,5 @@
 import 'package:ewallet_clover/ui/shared/utils/constants.dart';
 import 'package:ewallet_clover/ui/shared/widgets/information_tile.dart';
-import 'package:ewallet_clover/ui/shared/widgets/receipt_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
@@ -16,30 +15,24 @@ class FTReceipt extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        ReceiptView(
-          transaction: 'Fund Transfer',
-          refID: '',
-          status: 'Successful',
-          children: [
-            InformationTile(
-              title: 'Source',
-              value: '09123456789',
-            ),
-            Divider(),
-            InformationTile(
-              title: 'Target Name',
-              value: 'Pedro Garcia',
-            ),
-            InformationTile(
-              title: 'Target Mobile Number',
-              value: '099987654321',
-            ),
-            InformationTile(
-              title: 'Total Amount',
-              value: '100.00',
-            ),
-          ],
+        InformationTile(
+          title: 'Source',
+          value: '09123456789',
         ),
+        Divider(),
+        InformationTile(
+          title: 'Target Name',
+          value: 'Pedro Garcia',
+        ),
+        InformationTile(
+          title: 'Target Mobile Number',
+          value: '099987654321',
+        ),
+        InformationTile(
+          title: 'Total Amount',
+          value: '100.00',
+        ),
+        Spacer(),
         SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(kScreenPadding),

@@ -30,13 +30,12 @@ dependencies:
   cupertino_icons: ^1.0.0
   sliding_up_panel: ^1.0.2 # Modal Bottom Sheet
   intl: ^0.16.1 # Number Formatter
-  slide_to_confirm: ^0.0.7 # confirm slider
   provider: ^4.3.3 # state management
   pinput: ^1.0.0 # pin input
-  ticketview: ^1.0.0 # for receipt view
   http: ^0.12.2 # Service/API request
   encrypt: ^3.2.0 # encrypt & decrypt
   flutter_svg: ^0.19.1 # For displaying SVG
+  flutter_secure_storage: ^3.3.5 # Stores user in a secure storage | min sdk 18
 
 
 dev_dependencies:

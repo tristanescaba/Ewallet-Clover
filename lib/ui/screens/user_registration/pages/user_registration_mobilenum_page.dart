@@ -115,10 +115,10 @@ class _UserRegistrationMobileNumPageState extends State<UserRegistrationMobileNu
                     registration.mobileNumber = '0${_mobileFieldController.text}';
                     loadingDialog.show(message: 'Validating...');
                     if (await checkMobileNumber()) {
-//                      if (await requestOTP()) {
-                      loadingDialog.hide();
-                      widget.pageController.nextPage(duration: Duration(milliseconds: 400), curve: Curves.ease);
-//                      }
+                      if (await requestOTP()) {
+                        loadingDialog.hide();
+                        widget.pageController.nextPage(duration: Duration(milliseconds: 400), curve: Curves.ease);
+                      }
                     }
                   }
                 },

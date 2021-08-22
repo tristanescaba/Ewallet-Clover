@@ -1,7 +1,9 @@
 import 'package:ewallet_clover/core/functions/http_handler.dart';
 import 'package:ewallet_clover/core/functions/loading_dialog.dart';
 import 'package:ewallet_clover/core/providers/registration_provider.dart';
+import 'package:ewallet_clover/core/providers/user_provider.dart';
 import 'package:ewallet_clover/core/services/api_service.dart';
+import 'package:ewallet_clover/ui/screens/dashboard/dashboard_screen.dart';
 import 'package:ewallet_clover/ui/shared/utils/constants.dart';
 import 'package:ewallet_clover/ui/shared/widgets/gradient_button.dart';
 import 'package:ewallet_clover/ui/shared/widgets/my_dialog.dart';
@@ -35,6 +37,7 @@ class _UserRegistrationMPINPageState extends State<UserRegistrationMPINPage> {
   @override
   Widget build(BuildContext context) {
     final registration = Provider.of<RegistrationProvider>(context);
+    final user = Provider.of<UserProvider>(context);
     final loadingDialog = MyLoadingDialog(context);
 
     Future<bool> registerUser() async {
@@ -54,6 +57,30 @@ class _UserRegistrationMPINPageState extends State<UserRegistrationMPINPage> {
       );
 
       if (response.resultCode == 00) {
+        return true;
+      } else {
+        loadingDialog.hide();
+        await showDialog(
+          context: context,
+          child: MyDialog(
+            title: response.title,
+            message: response.message,
+            button1Title: 'Okay',
+            hasError: response.hasError,
+          ),
+        );
+        return false;
+      }
+    }
+
+    Future<bool> signIn() async {
+      ResponseModel response = await user.signIn(
+        mobile: registration.mobileNumber,
+        mpin: registration.mpin,
+      );
+
+      if (response.resultCode == 00) {
+        user.getBalance();
         return true;
       } else {
         loadingDialog.hide();
@@ -126,10 +153,12 @@ class _UserRegistrationMPINPageState extends State<UserRegistrationMPINPage> {
                   if (_formKey.currentState.validate()) {
                     registration.mpin = _mpinFieldController.text;
                     loadingDialog.show();
-//                    if (await registerUser()) {
-                    loadingDialog.hide();
-                    widget.pageController.nextPage(duration: Duration(milliseconds: 400), curve: Curves.ease);
-//                    }
+                    if (await registerUser()) {
+                      if (await signIn()) {
+                        loadingDialog.hide();
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => DashboardScreen()));
+                      }
+                    }
                   }
                 },
               ),

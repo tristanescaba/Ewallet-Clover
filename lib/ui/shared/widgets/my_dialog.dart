@@ -32,8 +32,9 @@ class MyDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 0.0),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(8.0)),
+        borderRadius: BorderRadius.all(Radius.circular(10.0)),
       ),
       title: Column(
         children: [
@@ -56,10 +57,9 @@ class MyDialog extends StatelessWidget {
                 Expanded(
                   child: Text(
                     title,
-                    textAlign: TextAlign.center,
+//                    textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.black87,
-                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
@@ -70,44 +70,63 @@ class MyDialog extends StatelessWidget {
       content: IntrinsicHeight(
         child: Column(
           children: [
-            Text(
-              message,
-              textAlign: TextAlign.center,
-            ),
-            if (subMessage != null)
-              Column(
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
+              child: Column(
                 children: [
-                  SizedBox(
-                    height: 20.0,
-                  ),
                   Text(
-                    subMessage,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 10.5, color: Colors.grey),
+                    message,
+//                    textAlign: TextAlign.center,
                   ),
+                  if (subMessage != null)
+                    Column(
+                      children: [
+                        SizedBox(
+                          height: 20.0,
+                        ),
+                        Text(
+                          subMessage,
+//                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 10.5, color: Colors.grey),
+                        ),
+                      ],
+                    ),
                 ],
               ),
+            ),
             SizedBox(
               height: 20.0,
             ),
-            button1Title == null || button1Title == ''
-                ? SizedBox()
-                : ElevatedButton(
-                    onPressed: button1Function == null ? () => Navigator.pop(context) : button1Function,
-                    child: Text(
-                      '  $button1Title  ',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    style: ButtonStyle(shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(50.0)))),
-                  ),
-            button2Title == null || button2Title == ''
-                ? SizedBox()
-                : FlatButton(
-                    child: Text(button2Title),
-                    onPressed: button2Function == null ? () => Navigator.pop(context) : button2Function,
-                    splashColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
-                  ),
+            Divider(),
+            Row(
+              children: [
+                button2Title == null || button2Title == ''
+                    ? SizedBox()
+                    : Expanded(
+                        child: Center(
+                          child: FlatButton(
+                            child: Text(button2Title, style: TextStyle(color: Colors.black54)),
+                            onPressed: button2Function == null ? () => Navigator.pop(context) : button2Function,
+                            splashColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
+                          ),
+                        ),
+                      ),
+                if ((button1Title != null) && (button2Title != null)) Text('|', style: TextStyle(fontSize: 40.0, color: Colors.grey[200], fontWeight: FontWeight.w200)),
+                button1Title == null || button1Title == ''
+                    ? SizedBox()
+                    : Expanded(
+                        child: Center(
+                          child: FlatButton(
+                            child: Text(button1Title, style: TextStyle(color: kPrimaryColor, fontWeight: FontWeight.bold)),
+                            onPressed: button1Function == null ? () => Navigator.pop(context) : button1Function,
+                            splashColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
+                          ),
+                        ),
+                      ),
+              ],
+            )
           ],
         ),
       ),

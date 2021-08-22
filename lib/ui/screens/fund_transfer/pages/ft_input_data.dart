@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 class FTInputData extends StatelessWidget {
   final PageController pageController;
 
-  const FTInputData({this.pageController});
+  const FTInputData({
+    this.pageController,
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -6,15 +6,27 @@ import 'package:ewallet_clover/core/functions/http_handler.dart';
 class APIService {
   String _url = 'https://thesisemoney.000webhostapp.com/mobileWallet';
 
-  Future<ResponseModel> signIn({String username, password}) async {
+  Future<ResponseModel> signIn({String mobile, mpin}) async {
     return await requestHandler(
       url: '$_url/signIn',
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, dynamic>{
-        'username': username,
-        'password': password,
+        'mobile': mobile,
+        'mpin': mpin,
+      }),
+    );
+  }
+
+  Future<ResponseModel> getBalance({String mobile, mpin}) async {
+    return await requestHandler(
+      url: '$_url/getBalance',
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, dynamic>{
+        'mobile': mobile,
       }),
     );
   }

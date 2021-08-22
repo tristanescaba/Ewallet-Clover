@@ -1,3 +1,5 @@
+import 'package:ewallet_clover/core/providers/shared_provider.dart';
+import 'package:ewallet_clover/core/providers/user_provider.dart';
 import 'package:ewallet_clover/ui/screens/welcome/welcome_screen.dart';
 import 'package:ewallet_clover/ui/shared/utils/constants.dart';
 import 'package:flutter/material.dart';
@@ -13,10 +15,13 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: kPrimaryColor));
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => RegistrationProvider()),
+        ChangeNotifierProvider(create: (context) => UserProvider()),
+        ChangeNotifierProvider(create: (context) => SharedProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

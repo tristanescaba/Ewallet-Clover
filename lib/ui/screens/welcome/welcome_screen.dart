@@ -1,8 +1,11 @@
-import 'package:ewallet_clover/ui/screens/dashboard/dashboard_screen.dart';
-import 'package:ewallet_clover/ui/screens/user_registration/user_registration_screen.dart';
+import 'package:ewallet_clover/core/providers/shared_provider.dart';
+import 'package:ewallet_clover/core/providers/user_provider.dart';
+import 'package:ewallet_clover/ui/screens/welcome/componentes/login_view.dart';
+import 'package:ewallet_clover/ui/screens/welcome/componentes/welcome_view.dart';
 import 'package:ewallet_clover/ui/shared/utils/constants.dart';
-import 'package:ewallet_clover/ui/shared/widgets/gradient_button.dart';
+import 'package:ewallet_clover/ui/shared/widgets/state_wrapper.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class WelcomeScreen extends StatelessWidget {
   final Shader linearGradient = LinearGradient(
@@ -11,57 +14,51 @@ class WelcomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(kScreenPadding),
-          child: Column(
-            children: [
-              Spacer(),
-              Text(
-                'E-Wallet',
-                style: new TextStyle(
-                  fontSize: 70.0,
-                  fontWeight: FontWeight.bold,
-                  foreground: Paint()..shader = linearGradient,
-                ),
-              ),
-              Spacer(),
-              Spacer(),
-              Spacer(),
-              GradientButton(
-                title: 'Log in',
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => DashboardScreen()),
-                  );
-                },
-              ),
-              SizedBox(height: 20.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('Don\'t have an account? ', style: TextStyle(fontSize: 14.0)),
-                  GestureDetector(
-                    child: Text(
-                      'Click here',
-                      style: TextStyle(
-                        fontSize: 14.0,
-                        color: kPrimaryColor,
-                      ),
+    final user = Provider.of<UserProvider>(context);
+    final shared = Provider.of<SharedProvider>(context);
+
+    Future<bool> appInit() async {
+      await user.checkSavedMobileNumber();
+      return true;
+    }
+
+    return StateWrapper(
+      initState: () async {
+        shared.isAppInitiated = await appInit();
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          brightness: Brightness.light,
+          backgroundColor: Colors.transparent,
+          elevation: 0.0,
+        ),
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(kScreenPadding),
+            child: Column(
+              children: [
+                Container(
+                  padding: EdgeInsets.only(bottom: 30.0),
+                  width: double.infinity,
+                  child: Text(
+                    'E-Wallet',
+                    textAlign: TextAlign.center,
+                    style: new TextStyle(
+                      fontSize: 60.0,
+                      fontWeight: FontWeight.bold,
+                      foreground: Paint()..shader = linearGradient,
                     ),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => UserRegistrationScreen()),
-                      );
-                    },
-                  )
-                ],
-              ),
-              Spacer(),
-            ],
+                  ),
+                ),
+                Expanded(
+                  child: shared.isAppInitiated
+                      ? user.hasSavedMobileNumber
+                          ? LoginView()
+                          : WelcomeView()
+                      : Center(child: CircularProgressIndicator()),
+                ),
+              ],
+            ),
           ),
         ),
       ),
