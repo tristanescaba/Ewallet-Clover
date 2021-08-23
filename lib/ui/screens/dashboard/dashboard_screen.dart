@@ -1,3 +1,4 @@
+import 'package:ewallet_clover/core/providers/transaction_provider.dart';
 import 'package:ewallet_clover/core/providers/user_provider.dart';
 import 'package:ewallet_clover/ui/screens/cash_in/cash_in_screen.dart';
 import 'package:ewallet_clover/ui/screens/dashboard/components/balance_view.dart';
@@ -41,6 +42,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserProvider>(context);
+    final transaction = Provider.of<TransactionProvider>(context);
 
     return Stack(
       children: [
@@ -90,7 +92,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     child: RefreshIndicator(
                       onRefresh: () async {
                         user.getBalance();
-                        user.getTransactionHistory();
                       },
                       child: CustomScrollView(
                         controller: _scrollController,
@@ -116,6 +117,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         title: 'Transfer',
                         enable: !user.isBalanceLoading,
                         onPressed: () {
+                          transaction.resetValues();
                           Navigator.push(context, MaterialPageRoute(builder: (context) => FundTransferScreen()));
                         },
                       ),

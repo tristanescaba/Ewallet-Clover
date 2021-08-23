@@ -1,6 +1,8 @@
 import 'dart:ui';
 
+import 'package:ewallet_clover/core/providers/transaction_provider.dart';
 import 'package:ewallet_clover/core/providers/user_provider.dart';
+import 'package:ewallet_clover/ui/screens/transaction_details/transaction_details_screen.dart';
 import 'package:ewallet_clover/ui/shared/utils/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +17,7 @@ class HistoryPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserProvider>(context);
+    final transaction = Provider.of<TransactionProvider>(context);
 
     return ListView(
       controller: controller,
@@ -35,15 +38,12 @@ class HistoryPanel extends StatelessWidget {
         user.isHistoryLoading
             ? Column(
                 children: [
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.2),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.1),
                   CircularProgressIndicator(backgroundColor: Colors.white),
-                  SizedBox(height: 10.0),
+                  SizedBox(height: 12.0),
                   Text(
                     'Fetching Transactions',
-                    style: TextStyle(
-                      color: kPrimaryColor,
-                      fontSize: 14.0,
-                    ),
+                    style: TextStyle(fontSize: 14.0),
                   ),
                 ],
               )
@@ -56,10 +56,15 @@ class HistoryPanel extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(horizontal: 18.0),
                           child: Row(
                             children: [
-                              Icon(Icons.history, color: kPrimaryColor),
+//                              Icon(Icons.history, color: kPrimaryColor),
                               Text(
-                                '  TRANSACTION HISTORY ',
+                                'TRANSACTION HISTORY ',
                                 style: TextStyle(color: kPrimaryColor, fontSize: 17.0),
+                              ),
+                              Spacer(),
+                              IconButton(
+                                icon: Icon(Icons.history, color: kPrimaryColor),
+                                onPressed: user.getTransactionHistory,
                               ),
                             ],
                           ),
@@ -72,43 +77,55 @@ class HistoryPanel extends StatelessWidget {
                             itemBuilder: (context, index) {
                               return Column(
                                 children: [
-                                  Container(
-                                    padding: EdgeInsets.all(18.0),
-                                    child: Row(
-                                      children: [
-                                        Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text(user.historyItems[index].trnDescription),
-                                            Text(
-                                              user.historyItems[index].trnDateTime,
-                                              style: TextStyle(fontSize: 13.0, fontWeight: FontWeight.w300),
-                                            ),
-                                          ],
-                                        ),
-                                        Spacer(),
-                                        user.historyItems[index].sourceMobile == user.mobileNumber
-                                            ? Row(
-                                                children: [
-                                                  Icon(
-                                                    Icons.remove,
-                                                    size: 18.0,
-                                                    color: Colors.redAccent,
-                                                  ),
-                                                  Text(' Php ${user.historyItems[index].amount}')
-                                                ],
-                                              )
-                                            : Row(
-                                                children: [
-                                                  Icon(
-                                                    Icons.add,
-                                                    size: 18.0,
-                                                    color: Colors.green,
-                                                  ),
-                                                  Text(' Php ${user.historyItems[index].amount}')
-                                                ],
+                                  GestureDetector(
+                                    onTap: () {
+                                      transaction.resetValues();
+                                      transaction.transDateTime = user.historyItems[index].trnDateTime;
+                                      transaction.transferAmount = double.parse(user.historyItems[index].amount);
+                                      transaction.targetMobileNumber = user.historyItems[index].targetMobile;
+                                      transaction.coreRefID = user.historyItems[index].refID;
+                                      transaction.mobileRefID = user.historyItems[index].mobileRef;
+                                      Navigator.push(context, MaterialPageRoute(builder: (context) => TransactionDetailsScreen()));
+                                    },
+                                    child: Container(
+                                      padding: EdgeInsets.all(18.0),
+                                      color: Colors.transparent,
+                                      child: Row(
+                                        children: [
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text(user.historyItems[index].trnDescription),
+                                              Text(
+                                                user.historyItems[index].trnDateTime,
+                                                style: TextStyle(fontSize: 13.0, fontWeight: FontWeight.w300),
                                               ),
-                                      ],
+                                            ],
+                                          ),
+                                          Spacer(),
+                                          user.historyItems[index].sourceMobile == user.mobileNumber
+                                              ? Row(
+                                                  children: [
+                                                    Icon(
+                                                      Icons.remove,
+                                                      size: 18.0,
+                                                      color: Colors.redAccent,
+                                                    ),
+                                                    Text(' Php ${user.historyItems[index].amount}')
+                                                  ],
+                                                )
+                                              : Row(
+                                                  children: [
+                                                    Icon(
+                                                      Icons.add,
+                                                      size: 18.0,
+                                                      color: Colors.green,
+                                                    ),
+                                                    Text(' Php ${user.historyItems[index].amount}')
+                                                  ],
+                                                ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                   Divider()
@@ -145,10 +162,22 @@ class HistoryPanel extends StatelessWidget {
                             height: 110.0,
                           ),
                           SizedBox(height: 30.0),
-                          Text(
-                            'Faile to load transactions, pull down to try again.',
-                            style: TextStyle(color: Colors.black54),
-                          )
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Failed to load transactions, ',
+                                style: TextStyle(color: Colors.black54),
+                              ),
+                              GestureDetector(
+                                onTap: user.getTransactionHistory,
+                                child: Text(
+                                  'Tap here to reload.',
+                                  style: TextStyle(color: kPrimaryColor),
+                                ),
+                              ),
+                            ],
+                          ),
                         ],
                       ),
       ],
