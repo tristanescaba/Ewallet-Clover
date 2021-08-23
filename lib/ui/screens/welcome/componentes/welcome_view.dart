@@ -55,7 +55,7 @@ class _WelcomeViewState extends State<WelcomeView> {
     }
 
     Future<void> checkMobileNumber() async {
-      final ResponseModel response = await _apiService.checkMobileNumber(mobileNumber: registration.mobileNumber);
+      final ResponseModel response = await _apiService.inquireMobileNumber(mobileNumber: registration.mobileNumber);
 
       if (response.resultCode == 00) {
         loadingDialog.hide();

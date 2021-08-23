@@ -36,7 +36,7 @@ class _UserRegistrationMobileNumPageState extends State<UserRegistrationMobileNu
     final loadingDialog = MyLoadingDialog(context);
 
     Future<bool> checkMobileNumber() async {
-      final ResponseModel response = await _apiService.checkMobileNumber(mobileNumber: registration.mobileNumber);
+      final ResponseModel response = await _apiService.inquireMobileNumber(mobileNumber: registration.mobileNumber);
 
       if (response.resultCode == 00) {
         return true;

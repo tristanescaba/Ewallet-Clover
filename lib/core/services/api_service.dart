@@ -31,9 +31,21 @@ class APIService {
     );
   }
 
-  Future<ResponseModel> checkMobileNumber({String mobileNumber}) async {
+  Future<ResponseModel> inquireMobileNumber({String mobileNumber}) async {
     return await requestHandler(
       url: '$_url/inquireMobile',
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, dynamic>{
+        "mobile": mobileNumber,
+      }),
+    );
+  }
+
+  Future<ResponseModel> validateMobileNumber({String mobileNumber}) async {
+    return await requestHandler(
+      url: '$_url/validateAccount',
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -99,6 +111,22 @@ class APIService {
       },
       body: jsonEncode(<String, dynamic>{
         'email': email,
+      }),
+    );
+  }
+
+  Future<ResponseModel> fundTransfer({String amount, source, target, refID}) async {
+    return await requestHandler(
+      url: '$_url/FT',
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, dynamic>{
+        "trnDescription": "Fund Transfer",
+        "amount": amount,
+        "sourceMobile": source,
+        "targetMobile": target,
+        "mobileRef": refID,
       }),
     );
   }

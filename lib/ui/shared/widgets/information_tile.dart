@@ -33,6 +33,7 @@ class InformationTile extends StatelessWidget {
                   fontSize: 14.0,
                 ),
               ),
+              SizedBox(height: 5.0),
               if (value != null)
                 Text(
                   value,

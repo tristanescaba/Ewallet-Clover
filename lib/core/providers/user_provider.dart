@@ -28,7 +28,7 @@ class UserProvider extends ChangeNotifier {
 
   // User Details
   get userID => _userID;
-  get mobile => _mobile;
+  get mobileNumber => _mobile;
   get firstName => _firstName;
   get middleName => _middleName;
   get lastName => _lastName;

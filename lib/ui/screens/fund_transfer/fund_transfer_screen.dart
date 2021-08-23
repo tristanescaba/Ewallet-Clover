@@ -1,6 +1,5 @@
 import 'package:ewallet_clover/ui/screens/fund_transfer/pages/ft_confirmation.dart';
 import 'package:ewallet_clover/ui/screens/fund_transfer/pages/ft_input_data.dart';
-import 'package:ewallet_clover/ui/screens/fund_transfer/pages/ft_mpin.dart';
 import 'package:ewallet_clover/ui/screens/fund_transfer/pages/ft_receipt.dart';
 import 'package:ewallet_clover/ui/shared/utils/constants.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +12,6 @@ class FundTransferScreen extends StatelessWidget {
     List<Widget> _pages = [
       FTInputData(pageController: _pageController),
       FTConfirmation(pageController: _pageController),
-      FTmpin(pageController: _pageController),
       FTReceipt(pageController: _pageController),
     ];
 
@@ -29,6 +27,7 @@ class FundTransferScreen extends StatelessWidget {
       body: PageView(
         children: _pages,
         controller: _pageController,
+        physics: NeverScrollableScrollPhysics(),
       ),
     );
   }
