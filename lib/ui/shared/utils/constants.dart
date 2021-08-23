@@ -1,22 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-//const kPrimaryColor = MaterialColor(
-//  0xFF04540f,
-//  const <int, Color>{
-//    50: const Color(0xFF04540f),
-//    100: const Color(0xFF04540f),
-//    200: const Color(0xFF04540f),
-//    300: const Color(0xFF04540f),
-//    400: const Color(0xFF04540f),
-//    500: const Color(0xFF04540f),
-//    600: const Color(0xFF04540f),
-//    700: const Color(0xFF04540f),
-//    800: const Color(0xFF04540f),
-//    900: const Color(0xFF04540f),
-//  },
-//);
-//const kPrimaryLightColor = Color(0xffcbe6c9);
 const kPrimaryColor = Colors.deepOrange;
 const kPrimaryLightColor = Colors.orangeAccent;
 const kSecondaryColor = Colors.greenAccent;

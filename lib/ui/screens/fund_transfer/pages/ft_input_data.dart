@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:barcode_scan/barcode_scan.dart';
 import 'package:ewallet_clover/core/functions/http_handler.dart';
 import 'package:ewallet_clover/core/functions/loading_dialog.dart';
 import 'package:ewallet_clover/core/providers/transaction_provider.dart';
@@ -75,6 +78,50 @@ class _FTInputDataState extends State<FTInputData> {
                       MyTextField(
                         title: 'Recipient\'s Mobile Number',
                         prefixText: '+63',
+                        suffixIcon: Icons.qr_code_scanner,
+                        enabled: !transaction.isQRScanned,
+                        suffixFunction: () async {
+                          var result = await BarcodeScanner.scan();
+
+                          if (result.rawContent != null) {
+                            if (result.rawContent.contains('name') && result.rawContent.contains('mobileNumber')) {
+                              final body = json.decode(result.rawContent);
+                              if (body['mobileNumber'].toString() != user.mobileNumber) {
+                                transaction.isQRScanned = true;
+                                transaction.targetName = body['name'].toString();
+                                transaction.targetMobileNumber = body['mobileNumber'].toString();
+                                _mobileFieldController.text = transaction.targetMobileNumber.toString().substring(1, transaction.targetMobileNumber.toString().length);
+                              } else {
+                                await showDialog(
+                                  context: context,
+                                  child: MyDialog(
+                                    title: 'Invalid Target',
+                                    message: 'You cannot transfer in your own number.',
+                                    button1Title: 'Okay',
+                                  ),
+                                );
+                              }
+                            } else {
+                              await showDialog(
+                                context: context,
+                                child: MyDialog(
+                                  title: 'Invalid QR Code',
+                                  message: 'Please try to scan other QR Code.',
+                                  button1Title: 'Okay',
+                                ),
+                              );
+                            }
+                          } else {
+                            await showDialog(
+                              context: context,
+                              child: MyDialog(
+                                title: 'Failed to Scan',
+                                message: 'Please try to scan again.',
+                                button1Title: 'Okay',
+                              ),
+                            );
+                          }
+                        },
                         maxLength: 10,
                         counterVisible: false,
                         keyboardType: TextInputType.number,
@@ -117,7 +164,11 @@ class _FTInputDataState extends State<FTInputData> {
                   if (_formKey.currentState.validate()) {
                     if (user.mobileNumber != '0${_mobileFieldController.text}') {
                       loadingDialog.show();
-                      if (await checkMobileNumber()) {
+                      if (transaction.isQRScanned) {
+                        transaction.transferAmount = double.parse(_amountFieldController.text);
+                        loadingDialog.hide();
+                        widget.pageController.nextPage(duration: Duration(milliseconds: 400), curve: Curves.ease);
+                      } else if (await checkMobileNumber()) {
                         transaction.targetMobileNumber = '0${_mobileFieldController.text}';
                         transaction.transferAmount = double.parse(_amountFieldController.text);
                         loadingDialog.hide();
@@ -128,7 +179,7 @@ class _FTInputDataState extends State<FTInputData> {
                         context: context,
                         child: MyDialog(
                           title: 'Invalid Target',
-                          message: 'You cannot transfer to your own account.',
+                          message: 'You cannot transfer to your own number.',
                           button1Title: 'Okay',
                         ),
                       );

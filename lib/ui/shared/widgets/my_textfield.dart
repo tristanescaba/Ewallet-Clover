@@ -32,6 +32,7 @@ class MyTextField extends StatefulWidget {
   final Function(String) onChanged;
   final Function(String) validator;
   final Function onEditingComplete;
+  final Function suffixFunction;
   final List<TextInputFormatter> inputFormatters;
   final FocusNode focusNode;
 
@@ -66,6 +67,7 @@ class MyTextField extends StatefulWidget {
     this.onChanged,
     this.onEditingComplete,
     this.validator,
+    this.suffixFunction,
     this.inputFormatters = const [],
     this.focusNode,
   });
@@ -157,21 +159,27 @@ class _MyTextFieldState extends State<MyTextField> {
               suffixIcon: widget.suffixText != null
                   ? Padding(
                       padding: EdgeInsets.symmetric(horizontal: 12.0),
-                      child: Text(
-                        widget.suffixText,
-                        style: TextStyle(
-                          color: kPrimaryColor,
-                          fontWeight: FontWeight.bold,
+                      child: GestureDetector(
+                        onTap: widget.suffixFunction == null ? () {} : widget.suffixFunction,
+                        child: Text(
+                          widget.suffixText,
+                          style: TextStyle(
+                            color: kPrimaryColor,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     )
                   : widget.suffixIcon != null
-                      ? Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 12.0),
-                          child: Icon(
-                            widget.suffixIcon,
-                            size: 25.0,
-                            color: kPrimaryColor,
+                      ? GestureDetector(
+                          onTap: widget.suffixFunction == null ? () {} : widget.suffixFunction,
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 12.0),
+                            child: Icon(
+                              widget.suffixIcon,
+                              size: 25.0,
+                              color: kPrimaryColor,
+                            ),
                           ),
                         )
                       : SizedBox(),

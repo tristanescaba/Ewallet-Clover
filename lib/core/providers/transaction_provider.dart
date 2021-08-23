@@ -52,8 +52,8 @@ class TransactionProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  get isBankFieldEnabled => _isMobileFieldEnabled;
-  set isBankFieldEnabled(bool newValue) {
+  get isMobileFieldEnabled => _isMobileFieldEnabled;
+  set isMobileFieldEnabled(bool newValue) {
     _isMobileFieldEnabled = newValue;
     notifyListeners();
   }

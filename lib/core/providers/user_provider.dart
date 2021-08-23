@@ -18,6 +18,8 @@ class UserProvider extends ChangeNotifier {
   String _dateOfBirth;
   String _maritalStatus;
   String _createdDateTime;
+  String _email;
+  String _address;
   bool _hasSecurityQuestion;
   // Balance
   bool _isBalanceLoading;
@@ -41,6 +43,8 @@ class UserProvider extends ChangeNotifier {
   get dateOfBirth => _dateOfBirth;
   get maritalStatus => _maritalStatus;
   get createdDateTime => _createdDateTime;
+  get email => _email;
+  get address => _address;
   get hasSecurityQuestion => _hasSecurityQuestion;
   // Balance
   get isBalanceLoading => _isBalanceLoading;
@@ -94,6 +98,11 @@ class UserProvider extends ChangeNotifier {
     await checkSavedMobileNumber();
   }
 
+  Future<void> removeSavedMobileNumber({String mobileNumber}) async {
+    storage.delete(key: 'mobileNumber');
+    await checkSavedMobileNumber();
+  }
+
   Future<ResponseModel> signIn({String mobile, mpin}) async {
     ResponseModel response = await _apiService.signIn(
       mobile: mobile,
@@ -112,6 +121,8 @@ class UserProvider extends ChangeNotifier {
       _maritalStatus = response.result['data']['maritalStatus'];
       _createdDateTime = response.result['data']['createdDateTime'];
       _hasSecurityQuestion = response.result['data']['hasSecurityQuestion'];
+      _email = response.result['data']['email'][0]['emailAdd'];
+      _address = response.result['data']['address'][0]['fullAddress'];
     }
     return response;
   }
