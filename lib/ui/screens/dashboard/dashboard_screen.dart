@@ -1,7 +1,7 @@
 import 'package:ewallet_clover/core/providers/user_provider.dart';
 import 'package:ewallet_clover/ui/screens/cash_in/cash_in_screen.dart';
 import 'package:ewallet_clover/ui/screens/dashboard/components/balance_view.dart';
-import 'package:ewallet_clover/ui/screens/dashboard/components/panel_widget.dart';
+import 'package:ewallet_clover/ui/screens/dashboard/components/history_panel.dart';
 import 'package:ewallet_clover/ui/screens/fund_transfer/fund_transfer_screen.dart';
 import 'package:ewallet_clover/ui/shared/utils/constants.dart';
 import 'package:ewallet_clover/ui/shared/widgets/action_button.dart';
@@ -82,13 +82,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
               minHeight: MediaQuery.of(context).size.height * 0.4,
               maxHeight: MediaQuery.of(context).size.height,
               parallaxEnabled: true,
-              panelBuilder: (controller) => PanelWidget(controller),
+              panelBuilder: (controller) => HistoryPanel(controller),
               body: Column(
                 children: [
                   Container(
                     height: MediaQuery.of(context).size.height * 0.35,
                     child: RefreshIndicator(
-                      onRefresh: user.getBalance,
+                      onRefresh: () async {
+                        user.getBalance();
+                        user.getTransactionHistory();
+                      },
                       child: CustomScrollView(
                         controller: _scrollController,
                         physics: const AlwaysScrollableScrollPhysics(),

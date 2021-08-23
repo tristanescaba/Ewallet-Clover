@@ -1,4 +1,5 @@
 import 'package:ewallet_clover/core/functions/http_handler.dart';
+import 'package:ewallet_clover/core/model/history_model.dart';
 import 'package:ewallet_clover/core/services/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -22,6 +23,10 @@ class UserProvider extends ChangeNotifier {
   bool _isBalanceLoading;
   double _totalBalance;
   double _availableBalance;
+  // History
+  bool _isHistoryLoading;
+  int _getHistoryStatus;
+  List<HistoryModel> _historyItems = [];
   // Others
   String _savedMobileNumber;
   bool _hasSavedMobileNumber;
@@ -41,6 +46,11 @@ class UserProvider extends ChangeNotifier {
   get isBalanceLoading => _isBalanceLoading;
   get totalBalance => _totalBalance;
   get availableBalance => _availableBalance;
+  // History
+  get isHistoryLoading => _isHistoryLoading;
+  get getHistoryStatus => _getHistoryStatus;
+  List<HistoryModel> get historyItems => _historyItems;
+
   // Others
   get savedMobileNumber => _savedMobileNumber;
   get hasSavedMobileNumber => _hasSavedMobileNumber;
@@ -65,6 +75,10 @@ class UserProvider extends ChangeNotifier {
     _isBalanceLoading = false;
     _totalBalance = null;
     _availableBalance = null;
+    // History
+    _isHistoryLoading = false;
+    _getHistoryStatus = 2;
+    _historyItems = [];
   }
 
   Future<void> checkSavedMobileNumber() async {
@@ -116,5 +130,29 @@ class UserProvider extends ChangeNotifier {
     _isBalanceLoading = false;
     notifyListeners();
     return response;
+  }
+
+  Future<void> getTransactionHistory() async {
+    _isHistoryLoading = true;
+    _historyItems.clear();
+    notifyListeners();
+    ResponseModel response = await _apiService.getTransactionHistory(
+      mobile: _mobile,
+    );
+
+    if (response.resultCode == 00) {
+      for (var item in response.result['data']) {
+        _historyItems.add(HistoryModel.fromJson(item));
+      }
+      if (_historyItems.length > 0) {
+        _getHistoryStatus = 0; // Has items
+      } else {
+        _getHistoryStatus = 1; // No items
+      }
+    } else {
+      _getHistoryStatus = 2; // Failed to load
+    }
+    _isHistoryLoading = false;
+    notifyListeners();
   }
 }

@@ -29,7 +29,6 @@ class LoginView extends StatelessWidget {
       );
 
       if (response.resultCode == 00) {
-        user.getBalance();
         return true;
       } else {
         loadingDialog.hide();
@@ -82,6 +81,8 @@ class LoginView extends StatelessWidget {
               onSubmit: (String pin) async {
                 loadingDialog.show();
                 if (await signIn(mpin: pin)) {
+                  user.getBalance();
+                  user.getTransactionHistory();
                   loadingDialog.hide();
                   Navigator.push(context, MaterialPageRoute(builder: (context) => DashboardScreen()));
                 }

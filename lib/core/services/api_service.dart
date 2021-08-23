@@ -130,4 +130,16 @@ class APIService {
       }),
     );
   }
+
+  Future<ResponseModel> getTransactionHistory({String mobile}) async {
+    return await requestHandler(
+      url: '$_url/transactionHistory',
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, dynamic>{
+        "mobile": mobile,
+      }),
+    );
+  }
 }
