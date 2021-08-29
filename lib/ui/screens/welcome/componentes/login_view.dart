@@ -2,6 +2,7 @@ import 'package:ewallet_clover/core/functions/http_handler.dart';
 import 'package:ewallet_clover/core/functions/loading_dialog.dart';
 import 'package:ewallet_clover/core/providers/user_provider.dart';
 import 'package:ewallet_clover/ui/screens/dashboard/dashboard_screen.dart';
+import 'package:ewallet_clover/ui/screens/question_setup/question_setup_screen.dart';
 import 'package:ewallet_clover/ui/shared/utils/constants.dart';
 import 'package:ewallet_clover/ui/shared/widgets/my_dialog.dart';
 import 'package:ewallet_clover/ui/shared/widgets/state_wrapper.dart';
@@ -60,7 +61,11 @@ class LoginView extends StatelessWidget {
           user.getBalance();
           user.getTransactionHistory();
           loadingDialog.hide();
-          Navigator.push(context, MaterialPageRoute(builder: (context) => DashboardScreen()));
+          if (!user.hasSecurityQuestion) {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => DashboardScreen()));
+          } else {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => QuestionSetupScreen()));
+          }
         }
       }
     }
@@ -116,7 +121,11 @@ class LoginView extends StatelessWidget {
                               user.getBalance();
                               user.getTransactionHistory();
                               loadingDialog.hide();
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => DashboardScreen()));
+                              if (user.hasSecurityQuestion) {
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => DashboardScreen()));
+                              } else {
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => QuestionSetupScreen()));
+                              }
                             }
                           },
                         ),

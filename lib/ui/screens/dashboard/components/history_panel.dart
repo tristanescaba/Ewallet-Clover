@@ -23,7 +23,7 @@ class HistoryPanel extends StatelessWidget {
       controller: controller,
       children: [
         Padding(
-          padding: const EdgeInsets.only(top: 15.0, bottom: 40.0),
+          padding: const EdgeInsets.only(top: 15.0, bottom: 20.0),
           child: Center(
             child: Container(
               height: 6.0,

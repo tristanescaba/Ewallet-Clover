@@ -143,13 +143,45 @@ class APIService {
     );
   }
 
+  Future<ResponseModel> getSecurityQuestions() async {
+    return await requestHandler(
+      url: '$_url/getSecurityQuestions',
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      isGet: true,
+    );
+  }
+
+  Future<ResponseModel> saveAnswers({String accountID, answer1, answer2, answer3}) async {
+    return await requestHandler(
+      url: '$_url/saveAnswers',
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, dynamic>{
+        "accountID": accountID,
+        "questionID1": "1",
+        "answer1": answer1,
+        "questionID2": "2",
+        "answer2": answer2,
+        "questionID3": "3",
+        "answer3": answer3,
+      }),
+    );
+  }
+
   Future<ResponseModel> resetMPIN({String mobile, mpin, token}) async {
     return await requestHandler(
       url: '$_url/changeMPIN',
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
-      body: jsonEncode(<String, dynamic>{"mobile": mobile, "mpin": mpin, "token": "ekM2R0NQekRrVDlRQ1FGQ05NSm4rZz09UHpMWmRmNXdGMml0YVNNWjN5TklaeDQzalZ0SUk0M3Y2U3hvMFhjSDY1OD0="}),
+      body: jsonEncode(<String, dynamic>{
+        "mobile": mobile,
+        "mpin": mpin,
+        "token": "ekM2R0NQekRrVDlRQ1FGQ05NSm4rZz09UHpMWmRmNXdGMml0YVNNWjN5TklaeDQzalZ0SUk0M3Y2U3hvMFhjSDY1OD0=",
+      }),
     );
   }
 }

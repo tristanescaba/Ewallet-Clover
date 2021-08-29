@@ -5,6 +5,7 @@ import 'package:ewallet_clover/core/providers/shared_provider.dart';
 import 'package:ewallet_clover/core/providers/user_provider.dart';
 import 'package:ewallet_clover/core/services/api_service.dart';
 import 'package:ewallet_clover/ui/screens/dashboard/dashboard_screen.dart';
+import 'package:ewallet_clover/ui/screens/question_setup/question_setup_screen.dart';
 import 'package:ewallet_clover/ui/shared/utils/constants.dart';
 import 'package:ewallet_clover/ui/shared/widgets/gradient_button.dart';
 import 'package:ewallet_clover/ui/shared/widgets/my_dialog.dart';
@@ -175,8 +176,14 @@ class _UserRegistrationMPINPageState extends State<UserRegistrationMPINPage> {
                           loadingDialog.show();
                           if (await registerUser()) {
                             if (await signIn()) {
+                              user.getBalance();
+                              user.getTransactionHistory();
                               loadingDialog.hide();
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => DashboardScreen()));
+                              if (!user.hasSecurityQuestion) {
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => DashboardScreen()));
+                              } else {
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => QuestionSetupScreen()));
+                              }
                             }
                           }
                         }
