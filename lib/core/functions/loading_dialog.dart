@@ -19,11 +19,12 @@ class MyLoadingDialog {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(60.0)),
             ),
-            child: Row(
+            child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 CircularProgressIndicator(),
-                Text(message == null ? '  Loading...' : '  $message'),
+                SizedBox(height: 12.0),
+                Text(message == null ? '   Loading...' : '  $message'),
               ],
             ),
           ),

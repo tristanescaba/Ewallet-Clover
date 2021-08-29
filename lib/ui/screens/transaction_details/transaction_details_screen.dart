@@ -28,6 +28,16 @@ class TransactionDetailsScreen extends StatelessWidget {
               color: Colors.white,
               child: Column(
                 children: [
+                  Text(
+                    'DigiWallet',
+                    textAlign: TextAlign.center,
+                    style: new TextStyle(
+                      fontSize: 40.0,
+                      fontWeight: FontWeight.bold,
+                      foreground: Paint()..shader = kShaderGradient,
+                    ),
+                  ),
+                  SizedBox(height: 20.0),
                   Container(
                     width: double.infinity,
                     decoration: BoxDecoration(

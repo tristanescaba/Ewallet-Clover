@@ -56,6 +56,16 @@ class FTReceipt extends StatelessWidget {
                       padding: const EdgeInsets.all(kScreenPadding),
                       child: Column(
                         children: [
+                          Text(
+                            'DigiWallet',
+                            textAlign: TextAlign.center,
+                            style: new TextStyle(
+                              fontSize: 35.0,
+                              fontWeight: FontWeight.bold,
+                              foreground: Paint()..shader = kShaderGradient,
+                            ),
+                          ),
+                          SizedBox(height: 20.0),
                           Container(
                             width: double.infinity,
                             decoration: BoxDecoration(

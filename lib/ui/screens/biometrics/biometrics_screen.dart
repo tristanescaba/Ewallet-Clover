@@ -102,6 +102,7 @@ class _BiometricsScreenState extends State<BiometricsScreen> {
                               controller: _mpinFieldController,
                               prefixIcon: Icons.lock,
                               maxLength: 6,
+                              keyboardType: TextInputType.number,
                               obscureText: true,
                               validator: (value) {
                                 if (value.isEmpty) {

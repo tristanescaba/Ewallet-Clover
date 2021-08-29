@@ -79,6 +79,7 @@ class _ResetMPINNewPageState extends State<ResetMPINNewPage> {
                         title: 'Input New MPIN',
                         controller: _mpinFieldController,
                         prefixIcon: Icons.lock,
+                        keyboardType: TextInputType.number,
                         maxLength: 6,
                         obscureText: true,
                         validator: (value) {
@@ -94,6 +95,7 @@ class _ResetMPINNewPageState extends State<ResetMPINNewPage> {
                         controller: _confirmMpinFieldController,
                         prefixIcon: Icons.lock,
                         maxLength: 6,
+                        keyboardType: TextInputType.number,
                         obscureText: true,
                         validator: (value) {
                           if (value.isEmpty) {

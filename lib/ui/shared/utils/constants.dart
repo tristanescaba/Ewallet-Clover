@@ -18,6 +18,11 @@ const LinearGradient kDisabledGradient = LinearGradient(
   end: Alignment.centerRight,
   colors: [Colors.white54, Colors.grey],
 );
+
+final Shader kShaderGradient = LinearGradient(
+  colors: <Color>[kPrimaryLightColor, kPrimaryColor],
+).createShader(Rect.fromLTWH(0.0, 0.0, 200.0, 70.0));
+
 const kAnimationDuration = Duration(milliseconds: 200);
 
 var money = NumberFormat("#,##0.00", "en_US");

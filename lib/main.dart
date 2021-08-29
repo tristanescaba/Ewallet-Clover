@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'DigitalWallet',
+        title: 'DigiWallet',
         theme: ThemeData(
           primarySwatch: kPrimaryColor,
           visualDensity: VisualDensity.adaptivePlatformDensity,

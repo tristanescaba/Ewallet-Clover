@@ -38,7 +38,17 @@ class MyQRScreen extends StatelessWidget {
                   style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                 ),
               ),
-              SizedBox(height: 47.0),
+              SizedBox(height: 20.0),
+              Text(
+                'DigiWallet',
+                textAlign: TextAlign.center,
+                style: new TextStyle(
+                  fontSize: 40.0,
+                  fontWeight: FontWeight.bold,
+                  foreground: Paint()..shader = kShaderGradient,
+                ),
+              ),
+              SizedBox(height: 18.0),
               Center(
                 child: QrImage(
                   data: '{"name":"${user.firstName} ${user.lastName}","mobileNumber":"${user.mobileNumber}"}',
