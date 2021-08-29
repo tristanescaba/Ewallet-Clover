@@ -1,8 +1,10 @@
 import 'package:ewallet_clover/core/functions/http_handler.dart';
 import 'package:ewallet_clover/core/functions/loading_dialog.dart';
 import 'package:ewallet_clover/core/providers/user_provider.dart';
+import 'package:ewallet_clover/core/services/api_service.dart';
 import 'package:ewallet_clover/ui/screens/dashboard/dashboard_screen.dart';
 import 'package:ewallet_clover/ui/screens/question_setup/question_setup_screen.dart';
+import 'package:ewallet_clover/ui/screens/reset_mpin/reset_mpin_screen.dart';
 import 'package:ewallet_clover/ui/shared/utils/constants.dart';
 import 'package:ewallet_clover/ui/shared/widgets/my_dialog.dart';
 import 'package:ewallet_clover/ui/shared/widgets/state_wrapper.dart';
@@ -13,6 +15,7 @@ import 'package:provider/provider.dart';
 
 class LoginView extends StatelessWidget {
   final LocalAuthentication auth = LocalAuthentication();
+  final APIService _apiService = new APIService();
   final _pinPutController = new TextEditingController();
   final _pinPutFocusNode = new FocusNode();
   final BoxDecoration _pinPutDecoration = BoxDecoration(
@@ -25,6 +28,69 @@ class LoginView extends StatelessWidget {
   Widget build(BuildContext context) {
     final user = Provider.of<UserProvider>(context);
     final loadingDialog = MyLoadingDialog(context);
+
+    Future<bool> requestOTP() async {
+      final ResponseModel response = await _apiService.requestOTP(mobileNumber: user.savedMobileNumber);
+
+      if (response.resultCode == 00) {
+        return true;
+      } else {
+        loadingDialog.hide();
+        await showDialog(
+          context: context,
+          child: MyDialog(
+            title: response.title,
+            message: response.message,
+            button1Title: 'Okay',
+            hasError: response.hasError,
+          ),
+        );
+        return false;
+      }
+    }
+
+    Future<bool> validateMobileNumber() async {
+      ResponseModel response = await _apiService.validateMobileNumber(mobileNumber: user.savedMobileNumber);
+
+      if (response.resultCode == 00) {
+        user.savedUserAccountID = response.result['data']['accountID'];
+        if (response.result['data']['hasSecurityQuestion']) {
+          return true;
+        } else {
+          loadingDialog.hide();
+          await showDialog(
+            context: context,
+            child: MyDialog(
+              title: 'Reset MPIN',
+              message: 'Your account haven\'t set up security questions yet. Would you like set up now?',
+              subMessage: 'You will receive an OTP for your authentication.',
+              button1Title: 'Let\'s do it',
+              button2Title: 'Not now',
+              button1Function: () async {
+                Navigator.pop(context);
+                loadingDialog.show(message: 'Requesting OTP...');
+                if (await requestOTP()) {
+                  loadingDialog.hide();
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => QuestionSetupScreen()));
+                }
+              },
+            ),
+          );
+          return false;
+        }
+      } else {
+        loadingDialog.hide();
+        await showDialog(
+          context: context,
+          child: MyDialog(
+            title: response.title,
+            message: response.message,
+            button1Title: 'Okay',
+          ),
+        );
+        return false;
+      }
+    }
 
     Future<bool> signIn({String mpin}) async {
       ResponseModel response = await user.signIn(
@@ -61,7 +127,7 @@ class LoginView extends StatelessWidget {
           user.getBalance();
           user.getTransactionHistory();
           loadingDialog.hide();
-          if (!user.hasSecurityQuestion) {
+          if (user.hasSecurityQuestion) {
             Navigator.push(context, MaterialPageRoute(builder: (context) => DashboardScreen()));
           } else {
             Navigator.push(context, MaterialPageRoute(builder: (context) => QuestionSetupScreen()));
@@ -133,8 +199,12 @@ class LoginView extends StatelessWidget {
                     ),
                     SizedBox(height: 20.0),
                     GestureDetector(
-                      onTap: () {
-                        user.hasSavedMobileNumber = false;
+                      onTap: () async {
+                        loadingDialog.show();
+                        if (await validateMobileNumber()) {
+                          loadingDialog.hide();
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => ResetMPINScreen()));
+                        }
                       },
                       child: Text(
                         'Forgot MPIN',

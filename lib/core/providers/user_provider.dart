@@ -30,6 +30,7 @@ class UserProvider extends ChangeNotifier {
   int _getHistoryStatus;
   List<HistoryModel> _historyItems = [];
   // Others
+  String _savedUserAccountID;
   String _savedMobileNumber;
   String _savedMPIN;
   bool _hasSavedMobileNumber;
@@ -58,6 +59,12 @@ class UserProvider extends ChangeNotifier {
   List<HistoryModel> get historyItems => _historyItems;
 
   // Others
+  get savedUserAccountID => _savedUserAccountID;
+  set savedUserAccountID(String newValue) {
+    _savedUserAccountID = newValue;
+    notifyListeners();
+  }
+
   get savedMobileNumber => _savedMobileNumber;
   get hasSavedMobileNumber => _hasSavedMobileNumber;
   set hasSavedMobileNumber(bool newValue) {

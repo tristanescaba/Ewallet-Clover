@@ -42,9 +42,9 @@ class _ResetMPINNewPageState extends State<ResetMPINNewPage> {
 
     Future<bool> resetMPIN() async {
       final ResponseModel response = await _apiService.resetMPIN(
-        mobile: registration.mobileNumber,
+        mobile: user.savedMobileNumber,
         mpin: registration.mpin,
-        token: '',
+        token: registration.answerToken,
       );
 
       if (response.resultCode == 00) {
@@ -83,7 +83,7 @@ class _ResetMPINNewPageState extends State<ResetMPINNewPage> {
                         obscureText: true,
                         validator: (value) {
                           if (value.isEmpty) {
-                            return "Please input your desired MPIN.";
+                            return "Please input your new MPIN.";
                           } else if (value.length != 6) {
                             return "MPIN must be 6 digits.";
                           }
@@ -132,7 +132,7 @@ class _ResetMPINNewPageState extends State<ResetMPINNewPage> {
                           message: 'Your MPIN was successfully reset, Please log in.',
                           button1Title: 'Okay',
                           button1Function: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => WelcomeScreen()));
+                            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => WelcomeScreen()), (Route<dynamic> route) => false);
                           },
                         ),
                       );

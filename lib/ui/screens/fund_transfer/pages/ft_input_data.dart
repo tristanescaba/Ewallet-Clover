@@ -43,7 +43,7 @@ class _FTInputDataState extends State<FTInputData> {
     final transaction = Provider.of<TransactionProvider>(context);
     final loadingDialog = MyLoadingDialog(context);
 
-    Future<bool> checkMobileNumber() async {
+    Future<bool> validateMobileNumber() async {
       ResponseModel response = await _apiService.validateMobileNumber(mobileNumber: '0${_mobileFieldController.text}');
 
       if (response.resultCode == 00) {
@@ -168,7 +168,7 @@ class _FTInputDataState extends State<FTInputData> {
                         transaction.transferAmount = double.parse(_amountFieldController.text);
                         loadingDialog.hide();
                         widget.pageController.nextPage(duration: Duration(milliseconds: 400), curve: Curves.ease);
-                      } else if (await checkMobileNumber()) {
+                      } else if (await validateMobileNumber()) {
                         transaction.targetMobileNumber = '0${_mobileFieldController.text}';
                         transaction.transferAmount = double.parse(_amountFieldController.text);
                         loadingDialog.hide();

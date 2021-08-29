@@ -13,6 +13,7 @@ class RegistrationProvider extends ChangeNotifier {
   String _fullAddress;
   String _deviceModel;
   String _deviceID;
+  String _answerToken;
 
   void resetValue() {
     _mobileNumber = null;
@@ -27,6 +28,7 @@ class RegistrationProvider extends ChangeNotifier {
     _fullAddress = null;
     _deviceModel = null;
     _deviceID = null;
+    _answerToken = null;
   }
 
   get email => _email;
@@ -98,6 +100,12 @@ class RegistrationProvider extends ChangeNotifier {
   get deviceID => _deviceID;
   set deviceID(String newValue) {
     _deviceID = newValue;
+    notifyListeners();
+  }
+
+  get answerToken => _answerToken;
+  set answerToken(String newValue) {
+    _answerToken = newValue;
     notifyListeners();
   }
 }

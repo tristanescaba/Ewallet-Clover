@@ -171,6 +171,24 @@ class APIService {
     );
   }
 
+  Future<ResponseModel> validateAnswers({String mobileNumber, answer1, answer2, answer3}) async {
+    return await requestHandler(
+      url: '$_url/validateAnswers',
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, dynamic>{
+        "mobile": mobileNumber,
+        "questionID1": "1",
+        "answer1": answer1,
+        "questionID2": "2",
+        "answer2": answer2,
+        "questionID3": "3",
+        "answer3": answer3,
+      }),
+    );
+  }
+
   Future<ResponseModel> resetMPIN({String mobile, mpin, token}) async {
     return await requestHandler(
       url: '$_url/changeMPIN',
@@ -180,7 +198,7 @@ class APIService {
       body: jsonEncode(<String, dynamic>{
         "mobile": mobile,
         "mpin": mpin,
-        "token": "ekM2R0NQekRrVDlRQ1FGQ05NSm4rZz09UHpMWmRmNXdGMml0YVNNWjN5TklaeDQzalZ0SUk0M3Y2U3hvMFhjSDY1OD0=",
+        "token": token,
       }),
     );
   }

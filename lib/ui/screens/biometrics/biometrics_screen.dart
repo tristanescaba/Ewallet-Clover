@@ -76,7 +76,10 @@ class _BiometricsScreenState extends State<BiometricsScreen> {
             SizedBox(height: 20.0),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 8.0),
-              child: Text('To enable biometrics, please type your MPIN.'),
+              child: Text(
+                'To enable biometrics, please type your MPIN.',
+                textAlign: TextAlign.center,
+              ),
             ),
             Expanded(
               child: SingleChildScrollView(
