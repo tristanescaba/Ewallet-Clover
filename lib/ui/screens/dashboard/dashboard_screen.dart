@@ -1,3 +1,4 @@
+import 'package:ewallet_clover/core/providers/shared_provider.dart';
 import 'package:ewallet_clover/core/providers/transaction_provider.dart';
 import 'package:ewallet_clover/core/providers/user_provider.dart';
 import 'package:ewallet_clover/ui/screens/dashboard/components/balance_view.dart';
@@ -45,6 +46,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserProvider>(context);
+    final shared = Provider.of<SharedProvider>(context);
     final transaction = Provider.of<TransactionProvider>(context);
 
     return Stack(
@@ -78,7 +80,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     children: [
                       SizedBox(height: 10.0),
                       Text(
-                        'Good day, ${user.firstName}!',
+                        '${shared.greet}, ${user.firstName}!',
                         style: TextStyle(
                           fontSize: 19.0,
                           fontWeight: FontWeight.bold,

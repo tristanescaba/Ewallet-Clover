@@ -27,6 +27,7 @@ class WelcomeScreen extends StatelessWidget {
       initState: () {
         Future.delayed(const Duration(milliseconds: 1500), () async {
           shared.getDeviceDetails();
+          shared.getGreet();
           await user.checkSavedUser();
           shared.isAppInitiated = await appInit();
         });

@@ -9,7 +9,7 @@ class SharedProvider extends ChangeNotifier {
 
   bool _isAppInitiated = false;
   bool _hasBiometrics;
-  // Device Info
+  String _greet;
   String _deviceModel;
   String _deviceID;
   String _deviceOSVersion;
@@ -20,6 +20,7 @@ class SharedProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  get greet => _greet;
   get deviceModel => _deviceModel;
   get deviceID => _deviceID;
   get deviceOSVersion => _deviceOSVersion;
@@ -27,6 +28,21 @@ class SharedProvider extends ChangeNotifier {
 
   Future<void> canCheckBiometrics() async {
     _hasBiometrics = await auth.canCheckBiometrics;
+    notifyListeners();
+  }
+
+  Future<void> getGreet() async {
+    if (DateTime.now().hour >= 0 && DateTime.now().hour <= 4) {
+      _greet = 'Hello';
+    } else if (DateTime.now().hour >= 5 && DateTime.now().hour <= 11) {
+      _greet = 'Good morning';
+    } else if (DateTime.now().hour >= 12 && DateTime.now().hour <= 13) {
+      _greet = 'Good noon';
+    } else if (DateTime.now().hour >= 14 && DateTime.now().hour <= 18) {
+      _greet = 'Good afternoon';
+    } else if (DateTime.now().hour >= 19 && DateTime.now().hour <= 23) {
+      _greet = 'Good evening';
+    }
     notifyListeners();
   }
 
