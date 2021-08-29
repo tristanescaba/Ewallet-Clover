@@ -43,9 +43,10 @@ class _FTConfirmationState extends State<FTConfirmation> {
 
       if (response.resultCode == 00) {
         transaction.isTransferSuccess = true;
-        transaction.transDateTime = response.result['trnDateTime'];
-        transaction.coreRefID = response.result['refID'];
+        transaction.transDateTime = response.result['data']['trnDateTime'];
+        transaction.coreRefID = response.result['data']['refID'];
         user.getBalance();
+        user.getTransactionHistory();
         return true;
       } else {
         transaction.isTransferSuccess = false;

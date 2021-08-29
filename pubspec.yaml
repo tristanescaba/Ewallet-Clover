@@ -40,6 +40,7 @@ dependencies:
   shortuuid: ^2.1.1 # for shorter uuid generation
   qr_flutter: ^3.2.0 # used to generate qr code
   barcode_scan: ^3.0.1 # used to scan qr code
+  local_auth: ^0.6.3+4 # biometrics
 
 
 dev_dependencies:

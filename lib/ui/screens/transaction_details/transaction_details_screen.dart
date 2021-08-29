@@ -12,7 +12,14 @@ class TransactionDetailsScreen extends StatelessWidget {
     final transaction = Provider.of<TransactionProvider>(context);
 
     return Scaffold(
-      appBar: AppBar(title: Text('Transaction Details')),
+      appBar: AppBar(
+        title: Text('Transaction Details'),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: kLinearGradient,
+          ),
+        ),
+      ),
       body: Column(
         children: [
           SingleChildScrollView(

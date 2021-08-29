@@ -31,7 +31,9 @@ class UserProvider extends ChangeNotifier {
   List<HistoryModel> _historyItems = [];
   // Others
   String _savedMobileNumber;
+  String _savedMPIN;
   bool _hasSavedMobileNumber;
+  bool _hasSavedMPIN;
 
   // User Details
   get userID => _userID;
@@ -63,6 +65,13 @@ class UserProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  get savedMPIN => _savedMPIN;
+  get hasSavedMPIN => _hasSavedMPIN;
+  set hasSavedMPIN(bool newValue) {
+    _hasSavedMPIN = newValue;
+    notifyListeners();
+  }
+
   void resetValue() {
     // User Details
     _userID = null;
@@ -85,22 +94,33 @@ class UserProvider extends ChangeNotifier {
     _historyItems = [];
   }
 
-  Future<void> checkSavedMobileNumber() async {
+  Future<void> checkSavedUser() async {
     _hasSavedMobileNumber = await storage.containsKey(key: 'mobileNumber');
     _savedMobileNumber = await storage.read(key: 'mobileNumber');
+    _hasSavedMPIN = await storage.containsKey(key: 'mpin');
+    _savedMPIN = await storage.read(key: 'mpin');
     notifyListeners();
-    print('checkSavedMobileNumber => hasSavedMobileNumber: $_hasSavedMobileNumber');
-    print('checkSavedMobileNumber => savedMobileNumber: $_savedMobileNumber');
   }
 
   Future<void> saveMobileNumber({String mobileNumber}) async {
     storage.write(key: 'mobileNumber', value: mobileNumber);
-    await checkSavedMobileNumber();
+    await checkSavedUser();
   }
 
-  Future<void> removeSavedMobileNumber({String mobileNumber}) async {
+  Future<void> saveMPIN({String mpin}) async {
+    storage.write(key: 'mpin', value: mpin);
+    await checkSavedUser();
+  }
+
+  Future<void> removeSavedUser({String mobileNumber}) async {
     storage.delete(key: 'mobileNumber');
-    await checkSavedMobileNumber();
+    storage.delete(key: 'mpin');
+    await checkSavedUser();
+  }
+
+  Future<void> deleteMPIN({String mobileNumber}) async {
+    storage.delete(key: 'mpin');
+    await checkSavedUser();
   }
 
   Future<ResponseModel> signIn({String mobile, mpin}) async {

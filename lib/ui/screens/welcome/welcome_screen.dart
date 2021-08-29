@@ -18,7 +18,8 @@ class WelcomeScreen extends StatelessWidget {
     final shared = Provider.of<SharedProvider>(context);
 
     Future<bool> appInit() async {
-      await user.checkSavedMobileNumber();
+      await user.checkSavedUser();
+      await shared.canCheckBiometrics();
       return true;
     }
 
@@ -26,6 +27,7 @@ class WelcomeScreen extends StatelessWidget {
       initState: () {
         Future.delayed(const Duration(milliseconds: 1500), () async {
           shared.getDeviceDetails();
+          await user.checkSavedUser();
           shared.isAppInitiated = await appInit();
         });
       },
@@ -35,34 +37,29 @@ class WelcomeScreen extends StatelessWidget {
           backgroundColor: Colors.transparent,
           elevation: 0.0,
         ),
-        body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(kScreenPadding),
-            child: Column(
-              children: [
-                Container(
-                  padding: EdgeInsets.only(bottom: 30.0),
-                  width: double.infinity,
-                  child: Text(
-                    'E-Wallet',
-                    textAlign: TextAlign.center,
-                    style: new TextStyle(
-                      fontSize: 60.0,
-                      fontWeight: FontWeight.bold,
-                      foreground: Paint()..shader = linearGradient,
-                    ),
-                  ),
+        body: Column(
+          children: [
+            Container(
+              padding: EdgeInsets.only(bottom: 30.0),
+              width: double.infinity,
+              child: Text(
+                'DigiWallet',
+                textAlign: TextAlign.center,
+                style: new TextStyle(
+                  fontSize: 60.0,
+                  fontWeight: FontWeight.bold,
+                  foreground: Paint()..shader = linearGradient,
                 ),
-                Expanded(
-                  child: shared.isAppInitiated
-                      ? user.hasSavedMobileNumber
-                          ? LoginView()
-                          : WelcomeView()
-                      : Center(child: CircularProgressIndicator()),
-                ),
-              ],
+              ),
             ),
-          ),
+            Expanded(
+              child: shared.isAppInitiated
+                  ? user.hasSavedMobileNumber
+                      ? LoginView()
+                      : WelcomeView()
+                  : Center(child: CircularProgressIndicator()),
+            ),
+          ],
         ),
       ),
     );

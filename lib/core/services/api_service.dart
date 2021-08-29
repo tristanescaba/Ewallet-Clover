@@ -142,4 +142,14 @@ class APIService {
       }),
     );
   }
+
+  Future<ResponseModel> resetMPIN({String mobile, mpin, token}) async {
+    return await requestHandler(
+      url: '$_url/changeMPIN',
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, dynamic>{"mobile": mobile, "mpin": mpin, "token": "ekM2R0NQekRrVDlRQ1FGQ05NSm4rZz09UHpMWmRmNXdGMml0YVNNWjN5TklaeDQzalZ0SUk0M3Y2U3hvMFhjSDY1OD0="}),
+    );
+  }
 }

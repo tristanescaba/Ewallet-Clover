@@ -2,13 +2,16 @@ import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:local_auth/local_auth.dart';
 
 class SharedProvider extends ChangeNotifier {
+  final LocalAuthentication auth = LocalAuthentication();
+
   bool _isAppInitiated = false;
+  bool _hasBiometrics;
   // Device Info
   String _deviceModel;
   String _deviceID;
-  String _deviceOS;
   String _deviceOSVersion;
 
   get isAppInitiated => _isAppInitiated;
@@ -20,6 +23,12 @@ class SharedProvider extends ChangeNotifier {
   get deviceModel => _deviceModel;
   get deviceID => _deviceID;
   get deviceOSVersion => _deviceOSVersion;
+  get hasBiometrics => _hasBiometrics;
+
+  Future<void> canCheckBiometrics() async {
+    _hasBiometrics = await auth.canCheckBiometrics;
+    notifyListeners();
+  }
 
   Future<void> getDeviceDetails() async {
     final DeviceInfoPlugin deviceInfoPlugin = new DeviceInfoPlugin();

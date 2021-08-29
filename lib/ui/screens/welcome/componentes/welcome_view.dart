@@ -4,6 +4,7 @@ import 'package:ewallet_clover/core/providers/registration_provider.dart';
 import 'package:ewallet_clover/core/providers/user_provider.dart';
 import 'package:ewallet_clover/core/services/api_service.dart';
 import 'package:ewallet_clover/ui/screens/user_registration/user_registration_screen.dart';
+import 'package:ewallet_clover/ui/shared/utils/constants.dart';
 import 'package:ewallet_clover/ui/shared/widgets/gradient_button.dart';
 import 'package:ewallet_clover/ui/shared/widgets/my_dialog.dart';
 import 'package:ewallet_clover/ui/shared/widgets/my_textfield.dart';
@@ -91,46 +92,51 @@ class _WelcomeViewState extends State<WelcomeView> {
       }
     }
 
-    return Column(
-      children: [
-        Text(
-          'Enter your mobile number to log in or activate if the number is not yet registered.',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 15.0,
-            color: Colors.grey[700],
-          ),
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.all(kScreenPadding),
+        child: Column(
+          children: [
+            Text(
+              'Enter your mobile number to log in or activate if the number is not yet registered.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 15.0,
+                color: Colors.grey[700],
+              ),
+            ),
+            SizedBox(height: 30.0),
+            Form(
+              key: _formKey,
+              child: MyTextField(
+                prefixText: '+63',
+                maxLength: 10,
+                controller: _mobileFieldController,
+                keyboardType: TextInputType.number,
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return "Please input mobile number.";
+                  } else if (value.length != 10 || value.substring(0, 1) != "9") {
+                    return "Mobile number is not valid.";
+                  }
+                },
+              ),
+            ),
+            Spacer(),
+            GradientButton(
+              title: 'Proceed',
+              onPressed: () async {
+                if (_formKey.currentState.validate()) {
+                  registration.resetValue();
+                  registration.mobileNumber = '0${_mobileFieldController.text}';
+                  loadingDialog.show(message: 'Validating...');
+                  await checkMobileNumber();
+                }
+              },
+            )
+          ],
         ),
-        SizedBox(height: 30.0),
-        Form(
-          key: _formKey,
-          child: MyTextField(
-            prefixText: '+63',
-            maxLength: 10,
-            controller: _mobileFieldController,
-            keyboardType: TextInputType.number,
-            validator: (value) {
-              if (value.isEmpty) {
-                return "Please input mobile number.";
-              } else if (value.length != 10 || value.substring(0, 1) != "9") {
-                return "Mobile number is not valid.";
-              }
-            },
-          ),
-        ),
-        Spacer(),
-        GradientButton(
-          title: 'Proceed',
-          onPressed: () async {
-            if (_formKey.currentState.validate()) {
-              registration.resetValue();
-              registration.mobileNumber = '0${_mobileFieldController.text}';
-              loadingDialog.show(message: 'Validating...');
-              await checkMobileNumber();
-            }
-          },
-        )
-      ],
+      ),
     );
   }
 }

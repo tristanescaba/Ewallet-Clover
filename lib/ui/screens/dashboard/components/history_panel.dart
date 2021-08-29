@@ -111,7 +111,7 @@ class HistoryPanel extends StatelessWidget {
                                                       size: 18.0,
                                                       color: Colors.redAccent,
                                                     ),
-                                                    Text(' Php ${user.historyItems[index].amount}')
+                                                    Text(' Php ${money.format(double.parse(user.historyItems[index].amount))}')
                                                   ],
                                                 )
                                               : Row(
@@ -121,7 +121,7 @@ class HistoryPanel extends StatelessWidget {
                                                       size: 18.0,
                                                       color: Colors.green,
                                                     ),
-                                                    Text(' Php ${user.historyItems[index].amount}')
+                                                    Text(' Php ${money.format(double.parse(user.historyItems[index].amount))}')
                                                   ],
                                                 ),
                                         ],
