@@ -41,6 +41,12 @@ dependencies:
   qr_flutter: ^3.2.0 # used to generate qr code
   barcode_scan: ^3.0.1 # used to scan qr code
   local_auth: ^0.6.3+4 # biometrics
+  flutter_launcher_icons: ^0.7.4 # App Icon
+
+flutter_icons:
+  android: "digiwallet_icon"
+  ios: true
+  image_path: "assets/images/digiwallet_icon.jpg"
 
 
 dev_dependencies:
@@ -55,4 +61,5 @@ flutter:
   uses-material-design: true
   assets:
     - assets/
+    - assets/images/
     - assets/svg/

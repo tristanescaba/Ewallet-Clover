@@ -183,6 +183,7 @@ class _ResetMPINSecurityQuestionsPageState extends State<ResetMPINSecurityQuesti
                           if (_formKey.currentState.validate()) {
                             loadingDialog.show(message: 'Validating answers...');
                             if (await validateAnswers()) {
+                              FocusScope.of(context).unfocus();
                               loadingDialog.hide();
                               widget.pageController.nextPage(duration: Duration(milliseconds: 400), curve: Curves.ease);
                             }

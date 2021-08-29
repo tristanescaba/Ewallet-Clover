@@ -54,7 +54,7 @@ Future<ResponseModel> requestHandler({String url, Map<String, String> headers, d
         return ResponseModel(
           resultCode: 90,
           title: 'Uncaught Error',
-          message: 'Something went wrong, You may send us a report to help us prevent this from happening.',
+          message: 'Something went wrong, Please try again later.',
           result: utf8Body,
           hasError: true,
         );
@@ -79,7 +79,7 @@ Future<ResponseModel> requestHandler({String url, Map<String, String> headers, d
       return ResponseModel(
         resultCode: 99,
         title: 'Uncaught Error',
-        message: 'Something went wrong, You may send us a report to help us prevent this from happening.',
+        message: 'Something went wrong, Please try again later.',
         result: e.toString(),
         hasError: true,
       );
